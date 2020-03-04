@@ -1,0 +1,112 @@
+# Default values for mychart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podAnnotations: {}
+  # linkerd.io/inject: enabled
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+env: {}
+  # APP_CONFIG: prod
+
+extraArgs: {}
+  # log-level: debug
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  timeoutSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  timeoutSeconds: 10
+
+extraVolumeMounts: {}
+  # - mountPath: /test-ebs
+  #   name: test-volume
+
+extraVolumes: {}
+  # - name: test-volume
+  #   awsElasticBlockStore:
+  #     volumeID: volume-id
+  #     fsType: ext4
+
+sidecarContainers: {}
+  # - name: cloudsql-proxy
+  #   image: gcr.io/cloudsql-docker/gce-proxy:1.14
+  #   command: ["/cloud_sql_proxy",
+  #             "-instances=<INSTANCE_CONNECTION_NAME>=tcp:5432",
+  #             "-credential_file=/secrets/cloudsql/credentials.json"]
+  #   securityContext:
+  #     runAsUser: 2  # non-root user
+  #     allowPrivilegeEscalation: false
+  #   volumeMounts:
+  #     - name: cloudsql-instance-credentials
+  #       mountPath: /secrets/cloudsql
+  #       readOnly: true
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
